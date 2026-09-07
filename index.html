@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#dff4fb" />
+  <title>HAKODATE NICE TRIP 2026</title>
+  <style>
+    :root{
+      --bg:#fffafc;
+      --card:#ffffff;
+      --ink:#2f3340;
+      --muted:#7d7f8c;
+      --line:#dceaf0;
+      --blue:#72b7cf;
+      --blue-soft:#eaf8fc;
+      --red:#d95f72;
+      --red-soft:#fff0f3;
+      --pink:#f4ddea;
+      --cream:#fff8eb;
+      --gold:#b88a3c;
+      --green:#719581;
+      --shadow:0 12px 28px rgba(72,104,122,.10);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, #e7f7fc 0, transparent 30rem),
+        radial-gradient(circle at 92% 12%, #fff0f5 0, transparent 28rem),
+        linear-gradient(180deg, #fffdfd 0%, #f8fbfc 100%);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+      line-height:1.65;
+    }
+
+    button,input,textarea{font:inherit}
+    a{color:inherit}
+
+    .wrap{
+      width:min(820px,100%);
+      margin:0 auto;
+      padding:24px 16px 56px;
+    }
+
+    header{
+      position:relative;
+      padding:26px 6px 20px;
+    }
+
+    header::after{
+      content:"✦  ✧  ✦";
+      position:absolute;
+      right:8px;
+      top:20px;
+      color:var(--red);
+      opacity:.65;
+      letter-spacing:.22em;
+      font-size:1.05rem;
+    }
+
+    .eyebrow{
+      color:var(--blue);
+      font-size:.83rem;
+      font-weight:900;
+      letter-spacing:.13em;
+    }
+
+    h1{
+      margin:.35rem 0 .28rem;
+      font-size:clamp(2rem,7vw,3.15rem);
+      line-height:1.08;
+      letter-spacing:-.035em;
+    }
+
+    .title-accent{color:var(--red)}
+    .subtitle{margin:0;color:var(--muted);font-size:.98rem}
+
+    .quick-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin:8px 0 20px;
+    }
+
+    .quick-card{
+      padding:14px 14px 13px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.88);
+      box-shadow:var(--shadow);
+    }
+
+    .quick-card .label{font-size:.76rem;color:var(--muted);font-weight:900;letter-spacing:.04em}
+    .quick-card strong{display:block;margin-top:2px;font-size:.96rem;line-height:1.4}
+    .quick-card.train{border-top:4px solid var(--blue)}
+    .quick-card.hotel{border-top:4px solid var(--red)}
+    .quick-card.tour{border-top:4px solid var(--gold)}
+
+    .tabs{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+      padding:10px 0 14px;
+      background:linear-gradient(180deg,rgba(250,253,254,.97) 72%,rgba(250,253,254,0));
+      backdrop-filter:blur(8px);
+    }
+
+    .tab{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.94);
+      color:var(--muted);
+      border-radius:999px;
+      padding:10px 9px;
+      font-weight:900;
+      cursor:pointer;
+      transition:.18s ease;
+      font-size:.9rem;
+    }
+
+    .tab.active{
+      color:#fff;
+      border-color:var(--blue);
+      background:linear-gradient(135deg,var(--blue),#8bc7d9);
+      box-shadow:0 8px 18px rgba(114,183,207,.24);
+    }
+
+    .panel{display:none}
+    .panel.active{display:block}
+
+    .day-head{
+      margin:14px 0 14px;
+      padding:18px 18px 16px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:rgba(255,255,255,.86);
+      box-shadow:var(--shadow);
+    }
+
+    .day-head strong{display:block;font-size:1.4rem;line-height:1.25}
+    .day-head span{color:var(--muted);font-size:.94rem}
+
+    .timeline{display:grid;gap:12px}
+    .item{
+      position:relative;
+      padding:16px 16px 16px 18px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:var(--card);
+      box-shadow:0 7px 18px rgba(72,104,122,.05);
+    }
+
+    .item::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:15px;
+      bottom:15px;
+      width:4px;
+      border-radius:4px;
+      background:var(--blue-soft);
+    }
+
+    .item.tour::before{background:var(--blue)}
+    .item.free{background:#fffafd;border-style:dashed}
+    .item.free::before{background:var(--pink)}
+    .item.party{background:var(--red-soft);border-color:#f0c8d1}
+    .item.party::before{background:var(--red)}
+    .item.important{background:var(--cream);border-color:#ead6ad}
+    .item.important::before{background:var(--gold)}
+
+    .time{
+      display:inline-block;
+      min-width:7em;
+      color:var(--blue);
+      font-weight:950;
+      font-variant-numeric:tabular-nums;
+    }
+    .place{font-weight:900}
+    .meta{margin-top:5px;color:var(--muted);font-size:.91rem}
+
+    .badge{
+      display:inline-block;
+      margin-right:6px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:var(--blue-soft);
+      color:#4e91a9;
+      font-size:.74rem;
+      font-weight:950;
+      vertical-align:1px;
+    }
+    .badge.free{background:#f9eaf2;color:#a65f84}
+    .badge.fixed{background:#eaf8fc;color:#4e91a9}
+    .badge.party{background:#ffe1e7;color:#b5465b}
+    .badge.todo{background:#fff0ce;color:#9f7425}
+
+    .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .links a{
+      text-decoration:none;
+      font-size:.86rem;
+      font-weight:850;
+      padding:6px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:#fff;
+      color:#5c7180;
+    }
+
+    .section-title{margin:24px 2px 10px;font-size:1.08rem}
+
+    .memo-card,.check-group,.info-card{
+      margin:12px 0;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:#fff;
+      box-shadow:0 7px 18px rgba(72,104,122,.05);
+      overflow:hidden;
+    }
+
+    .memo-card h3,.check-group h3,.info-card h3{
+      margin:0;
+      padding:14px 16px 10px;
+      font-size:1rem;
+      background:#f9fcfd;
+      border-bottom:1px solid #edf3f5;
+    }
+
+    .memo-body{padding:14px 16px 16px}
+    textarea{
+      width:100%;
+      min-height:180px;
+      resize:vertical;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 13px;
+      color:var(--ink);
+      background:#fffdfd;
+      outline:none;
+      line-height:1.6;
+    }
+    textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+
+    .memo-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .memo-actions button{
+      border:0;
+      border-radius:999px;
+      padding:9px 13px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .share-btn{background:var(--red);color:#fff}
+    .save-btn{background:var(--blue);color:#fff}
+    .clear-btn{background:#f3f5f6;color:#697079}
+
+    .tiny{color:var(--muted);font-size:.82rem}
+    .note{
+      margin-top:16px;
+      padding:13px 15px;
+      border-radius:16px;
+      background:var(--blue-soft);
+      color:#4d6d79;
+      font-size:.9rem;
+    }
+
+    .check-row{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+      padding:12px 16px;
+      border-bottom:1px solid #f0f4f5;
+      cursor:pointer;
+      user-select:none;
+    }
+    .check-row:last-child{border-bottom:0}
+    .check-row input{width:20px;height:20px;margin-top:2px;accent-color:var(--red);flex:0 0 auto}
+    .check-row span{flex:1}
+    .check-row input:checked + span{color:var(--muted);text-decoration:line-through}
+
+    .packing-summary{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin:10px 0 14px;
+      padding:14px 16px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+    .progress{font-weight:950}
+    .reset{
+      border:0;background:transparent;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:.84rem
+    }
+
+    .info-body{padding:14px 16px 16px}
+    .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+    .mini-card{padding:11px 12px;border:1px solid var(--line);border-radius:14px;background:#fcfeff;font-size:.89rem}
+    .mini-card strong{display:block;margin-bottom:2px}
+
+    footer{padding:28px 4px 8px;color:var(--muted);text-align:center;font-size:.79rem}
+
+    @media(max-width:680px){
+      .quick-grid{grid-template-columns:1fr}
+      .tabs{grid-template-columns:repeat(2,1fr)}
+      .mini-grid{grid-template-columns:1fr}
+      header::after{display:none}
+    }
+    @media(max-width:480px){
+      .wrap{padding-inline:12px}
+      .item{padding:15px 14px}
+      .time{display:block;min-width:0;margin-bottom:2px}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="eyebrow">2026.10.03 — 10.04</div>
+      <h1>HAKODATE<br><span class="title-accent">NICE TRIP</span></h1>
+      <p class="subtitle">3人で見る用。ツアー・交通・自由時間・ﾊﾟｰﾁｰを1ページに。</p>
+    </header>
+
+    <section class="quick-grid" aria-label="確定情報">
+      <div class="quick-card train">
+        <div class="label">OUTBOUND</div>
+        <strong>🚄 10/3 はやぶさ5号<br>大宮 08:42 → 新函館北斗 12:15</strong>
+      </div>
+      <div class="quick-card hotel">
+        <div class="label">HOTEL</div>
+        <strong>🏨 プレミアホテル<br>函館駅前</strong>
+      </div>
+      <div class="quick-card tour">
+        <div class="label">RETURN</div>
+        <strong>🚄 10/4 はやぶさ40号<br>新函館北斗 17:26 → 大宮 21:01</strong>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="ページ切り替え">
+      <button class="tab active" data-target="day1">10/3 SAT</button>
+      <button class="tab" data-target="day2">10/4 SUN</button>
+      <button class="tab" data-target="memo">3人メモ</button>
+      <button class="tab" data-target="packing">持ち物</button>
+    </nav>
+
+    <section id="day1" class="panel active">
+      <div class="day-head">
+        <strong>10/3（土） DAY 1</strong>
+        <span>大宮 → 函館 / バスツアー → 夜景 → ﾊﾟｰﾁｰ</span>
+      </div>
+
+      <div class="timeline">
+        <article class="item important">
+          <div><span class="time">08:42 → 12:15</span><span class="place">🚄 大宮 → 新函館北斗</span></div>
+          <div class="meta">はやぶさ5号。初・北海道新幹線！</div>
+        </article>
+
+        <article class="item tour">
+          <div><span class="time">12:50頃</span><span class="place">🚌 新函館北斗駅　ツアー合流</span></div>
+          <div class="meta">函館空港 13:20頃 → 函館駅 13:50頃。時間は当日の道路状況等で前後あり。</div>
+        </article>
+
+        <article class="item tour">
+          <div><span class="badge fixed">ツアー</span><span class="place">⭐ 五稜郭タワー</span></div>
+          <div class="meta">約45分。10/4が日曜のため、公式案内どおり2日目予定から1日目へ入替。</div>
+          <div class="links">
+            <a href="https://www.google.com/maps/search/?api=1&query=五稜郭タワー" target="_blank" rel="noopener">Google Maps</a>
+          </div>
+        </article>
+
+        <article class="item tour">
+          <div><span class="badge fixed">ツアー</span><span class="place">🐟 はこだて自由市場</span></div>
+          <div class="meta">自由昼食 約60分。翌日が日曜定休のため1日目へ入替。</div>
+          <div class="links">
+            <a href="https://www.google.com/maps/search/?api=1&query=はこだて自由市場" target="_blank" rel="noopener">Google Maps</a>
+          </div>
+        </article>
+
+        <article class="item tour">
+          <div><span class="badge fixed">ツアー</span><span class="place">🌴 函館市熱帯植物園</span></div>
+          <div class="meta">約30分。</div>
+          <div class="links">
+            <a href="https://www.google.com/maps/search/?api=1&query=函館市熱帯植物園" target="_blank" rel="noopener">Google Maps</a>
+          </div>
+        </article>
+
+        <article class="item tour">
+          <div><span class="badge fixed">ツアー</span><span class="place">🌃 函館山展望台</span></div>
+          <div class="meta">約75分。往路バス／復路ロープウェイ予定。10/3は法定点検期間前。</div>
+          <div class="links">
+            <a href="https://www.google.com/maps/search/?api=1&query=函館山展望台" target="_blank" rel="noopener">Google Maps</a>
+          </div>
+        </article>
+
+        <article class="item tour">
+          <div><span class="time">18:30頃</span><span class="place">📍 函館駅　ツアー解散</span></div>
+        </article>
+
+        <article class="item free">
+          <div><span class="badge free">3人で相談</span><span class="place">🌙 夜の函館をちょっと歩く？</span></div>
+          <div class="meta">体力・寒さ・天気と相談。翌朝9:00集合なので無理しない。</div>
+        </article>
+
+        <article class="item party">
+          <div><span class="badge party">重要</span><span class="place">🍔 ラッキーピエロ回収 → ホテルでﾊﾟｰﾁｰ</span></div>
+          <div class="meta">モバイルオーダー候補。カレーキチはカレー確定。オムライスも気になる。BGM：パーチタイム。</div>
+          <div class="links">
+            <a href="https://www.google.com/maps/search/?api=1&query=ラッキーピエロ+函館駅前店" target="_blank" rel="noopener">駅前店 Maps</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="day2" class="panel">
+      <div class="day-head">
+        <strong>10/4（日） DAY 2</strong>
+        <span>函館駅 → 金森赤レンガ → 解散後フリー → 新函館北斗</span>
+      </div>
+
+      <div class="timeline">
+        <article class="item important">
+          <div><span class="time">09:00</span><span class="place">📍 函館駅 集合</span></div>
+          <div class="meta">9:15発予定。</div>
+        </article>
+
+        <article class="item tour">
+          <div><span class="badge fixed">ツアー</span><span class="place">🧱 金森赤レンガ倉庫周辺　自由散策</span></div>
+          <div class="meta">約100分。日曜定休の自由市場と入替のため、2日目に実施。</div>
+          <div class="links">
+            <a href="https://www.google.com/maps/search/?api=1&query=金森赤レンガ倉庫" target="_blank" rel="noopener">金森赤レンガ</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=八幡坂+函館" target="_blank" rel="noopener">八幡坂</a>
+          </div>
+        </article>
+
+        <article class="item free">
+          <div><span class="badge free">自由時間候補</span><span class="place">📸 八幡坂 / おみやげ / ご当地ちいかわ</span></div>
+          <div class="meta">小さくてかわいい函館雑貨を探す。ご当地うさぎ・靴下も候補。</div>
+        </article>
+
+        <article class="item tour">
+          <div><span class="time">12:00頃</span><span class="place">🚌 函館駅</span></div>
+          <div class="meta">函館空港 12:30頃 → 新函館北斗 13:00頃。</div>
+        </article>
+
+        <article class="item free">
+          <div><span class="time">13:00頃〜</span><span class="place">☕ 新幹線まで自由時間</span></div>
+          <div class="meta">17:26発まで約4時間。カフェ・おみやげ・軽食など、当日の気分で。</div>
+        </article>
+
+        <article class="item important">
+          <div><span class="time">17:26 → 21:01</span><span class="place">🚄 新函館北斗 → 大宮</span></div>
+          <div class="meta">はやぶさ40号。からっぽのバッグ、帰りにはぱんぱんに膨らんで〜♪</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="memo" class="panel">
+      <div class="day-head">
+        <strong>3人メモ</strong>
+        <span>LINEを遡らないための作戦会議置き場。</span>
+      </div>
+
+      <div class="info-card">
+        <h3>📌 今のところ決まってる / 気になる</h3>
+        <div class="info-body">
+          <div class="mini-grid">
+            <div class="mini-card"><strong>🍔 ラキピ</strong>夜はテイクアウトしてﾊﾟｰﾁｰしたい</div>
+            <div class="mini-card"><strong>🍛 カレー</strong>カレーキチ枠、ほぼ確定</div>
+            <div class="mini-card"><strong>🌃 函館山</strong>夜景＋復路ロープウェイ楽しみ</div>
+            <div class="mini-card"><strong>🛍️ おみやげ</strong>小さくてかわいい雑貨 / ご当地うさぎ</div>
+            <div class="mini-card"><strong>📸 金森周辺</strong>八幡坂・赤レンガ・聖地の確認</div>
+            <div class="mini-card"><strong>📖 予習</strong>夜班スト読み返す</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="memo-card">
+        <h3>💬 追記メモ</h3>
+        <div class="memo-body">
+          <textarea id="sharedMemo" placeholder="例：赤レンガでここ寄りたい / ラキピ何頼む？ / カフェ候補 など"></textarea>
+          <div class="memo-actions">
+            <button class="save-btn" id="saveMemo" type="button">この端末に保存</button>
+            <button class="share-btn" id="shareMemo" type="button">共有リンクをコピー</button>
+            <button class="clear-btn" id="clearMemo" type="button">消す</button>
+          </div>
+          <p class="tiny">※「この端末に保存」は自分のブラウザだけ。共有リンクはメモ内容をURLに入れてコピーするので、3人に送れば同じメモを開けます。リアルタイム共同編集ではありません。</p>
+        </div>
+      </div>
+
+      <div class="note">GitHub Pagesで公開したら、旅程本体は3人とも同じURLで見られます。予定が固まったらHTML側の固定メモに反映するのがいちばん確実。</div>
+    </section>
+
+    <section id="packing" class="panel">
+      <div class="day-head">
+        <strong>持ち物チェック</strong>
+        <span>1泊なのでスナイデルホームのバッグ1個を目標に。</span>
+      </div>
+
+      <div class="packing-summary">
+        <div>
+          <div class="progress" id="progressText">0 / 0 完了</div>
+          <div class="tiny">チェックはこの端末に保存</div>
+        </div>
+        <button class="reset" id="resetChecks" type="button">全部外す</button>
+      </div>
+
+      <div class="check-group">
+        <h3>🚨 絶対忘れるな</h3>
+        <label class="check-row"><input type="checkbox" data-key="wallet"><span>財布</span></label>
+        <label class="check-row"><input type="checkbox" data-key="phone"><span>スマホ</span></label>
+        <label class="check-row"><input type="checkbox" data-key="ticket"><span>新幹線・ツアー関係の確認</span></label>
+        <label class="check-row"><input type="checkbox" data-key="id"><span>身分証</span></label>
+      </div>
+
+      <div class="check-group">
+        <h3>👚 服・防寒</h3>
+        <label class="check-row"><input type="checkbox" data-key="clothes"><span>2日目の着替え</span></label>
+        <label class="check-row"><input type="checkbox" data-key="underwear"><span>下着・靴下</span></label>
+        <label class="check-row"><input type="checkbox" data-key="outer"><span>函館山用の上着</span></label>
+        <label class="check-row"><input type="checkbox" data-key="warm"><span>必要なら首元・手元の防寒</span></label>
+        <label class="check-row"><input type="checkbox" data-key="collar"><span>赤いセーラー襟（完成していれば！）</span></label>
+      </div>
+
+      <div class="check-group">
+        <h3>🧸 推し活</h3>
+        <label class="check-row"><input type="checkbox" data-key="nui"><span>ぬい</span></label>
+        <label class="check-row"><input type="checkbox" data-key="acrylic"><span>アクスタ</span></label>
+      </div>
+
+      <div class="check-group">
+        <h3>💄 身支度</h3>
+        <label class="check-row"><input type="checkbox" data-key="makeup"><span>メイク道具</span></label>
+        <label class="check-row"><input type="checkbox" data-key="skincare"><span>スキンケア・歯ブラシ等</span></label>
+        <label class="check-row"><input type="checkbox" data-key="medicine"><span>常備薬</span></label>
+      </div>
+
+      <div class="check-group">
+        <h3>🔋 電子機器</h3>
+        <label class="check-row"><input type="checkbox" data-key="battery"><span>モババ</span></label>
+        <label class="check-row"><input type="checkbox" data-key="earphones"><span>イヤホン</span></label>
+        <label class="check-row"><input type="checkbox" data-key="cable"><span>充電ケーブル</span></label>
+      </div>
+
+      <div class="note">帰りはおみやげで増える前提。往路はバッグに余白を残す。</div>
+    </section>
+
+    <footer>
+      夜景を見て、ロープウェイに乗って、ラキピを回収して、ﾊﾟｰﾁｰする。
+    </footer>
+  </main>
+
+  <script>
+    const tabs = [...document.querySelectorAll('.tab')];
+    const panels = [...document.querySelectorAll('.panel')];
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.target).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    const PACKING_KEY = 'hakodate-nice-trip-2026-packing';
+    const checks = [...document.querySelectorAll('input[type="checkbox"][data-key]')];
+    const progressText = document.getElementById('progressText');
+
+    function readPacking(){
+      try{return JSON.parse(localStorage.getItem(PACKING_KEY)) || {}}catch(e){return {}}
+    }
+    function updateProgress(){
+      const done = checks.filter(c => c.checked).length;
+      progressText.textContent = `${done} / ${checks.length} 完了`;
+    }
+    function savePacking(){
+      const state = {};
+      checks.forEach(c => state[c.dataset.key] = c.checked);
+      localStorage.setItem(PACKING_KEY, JSON.stringify(state));
+      updateProgress();
+    }
+    const packingState = readPacking();
+    checks.forEach(c => {
+      c.checked = !!packingState[c.dataset.key];
+      c.addEventListener('change', savePacking);
+    });
+    document.getElementById('resetChecks').addEventListener('click', () => {
+      if(!confirm('持ち物チェックを全部外す？')) return;
+      checks.forEach(c => c.checked = false);
+      savePacking();
+    });
+    updateProgress();
+
+    const MEMO_KEY = 'hakodate-nice-trip-2026-memo';
+    const memo = document.getElementById('sharedMemo');
+    const hashParams = new URLSearchParams(location.hash.replace(/^#/,''));
+    const sharedFromUrl = hashParams.get('memo');
+
+    if(sharedFromUrl){
+      try{memo.value = decodeURIComponent(sharedFromUrl)}catch(e){memo.value = sharedFromUrl}
+    }else{
+      memo.value = localStorage.getItem(MEMO_KEY) || '';
+    }
+
+    document.getElementById('saveMemo').addEventListener('click', () => {
+      localStorage.setItem(MEMO_KEY, memo.value);
+      alert('この端末に保存しました');
+    });
+
+    document.getElementById('clearMemo').addEventListener('click', () => {
+      if(!confirm('メモを消す？')) return;
+      memo.value = '';
+      localStorage.removeItem(MEMO_KEY);
+      history.replaceState(null,'',location.pathname + location.search);
+    });
+
+    document.getElementById('shareMemo').addEventListener('click', async () => {
+      const encoded = encodeURIComponent(memo.value);
+      const url = location.origin + location.pathname + (encoded ? `#memo=${encoded}` : '');
+      try{
+        await navigator.clipboard.writeText(url);
+        alert('共有リンクをコピーしました');
+      }catch(e){
+        prompt('このURLをコピーして送ってね', url);
+      }
+    });
+  </script>
+</body>
+</html>
